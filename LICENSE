@@ -1,0 +1,11 @@
+Copyright (c) 2026 AKIRA / Shopakira Labs.
+
+All rights reserved. This source code is proprietary and confidential. It is
+published in this repository so that it can be installed as a dependency by
+AKIRA-owned bolt.new projects (via `npm install github:ShopakiraLabs/akira-design-system`),
+and so that LLM-based design tools (e.g. bolt.new) can read the documentation
+to apply the AKIRA design system.
+
+It is NOT open source. Redistribution, modification, or use of this code by
+parties outside of AKIRA / Shopakira Labs is not permitted without prior
+written permission.

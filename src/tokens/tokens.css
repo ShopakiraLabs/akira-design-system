@@ -1,0 +1,186 @@
+/* =============================================================
+   AKIRA Design System · akira-theme.css
+   v1 · 2026-04-22
+   -------------------------------------------------------------
+   One file, seven color themes, three structural styles.
+   Drop into any AKIRA bolt app alongside akira-theme-picker.js.
+
+   How it works
+     - :root defines the default theme (AKIRA Red) + default style (Modern).
+     - Alternate themes are applied by setting data-theme="<slug>" on <html>.
+     - Alternate structural styles are applied by setting data-style="<slug>".
+     - Use the semantic CSS vars (--color-bg, --color-accent, etc.) in your
+       component styles. Everything transitions smoothly when the user
+       switches theme via akira-theme-picker.js.
+
+   Semantic tokens (use these in your components)
+     Colors:
+       --color-bg            page background
+       --color-card          card / tile background
+       --color-surface       elevated surface (buttons, hover, inputs)
+       --color-text-primary  primary text
+       --color-text-muted    secondary / label text
+       --color-accent        brand accent (buttons, charts, highlights)
+       --color-border        card / panel border
+     Structure:
+       --radius-card         large radius (cards, tiles, modals)
+       --radius-base         medium radius (inputs, buttons)
+       --radius-bar          small radius (bars, chips)
+       --shadow-card         card shadow
+       --border-thickness    border width (1px modern / 0 material / 2px flat)
+     Reserved:
+       --akira-heritage-red  #D92028 — AKIRA brand red. Reserved for the
+                             active-team sidebar indicator and never used
+                             as the variable accent. Do not repurpose.
+
+   Adding a theme
+     Add a new [data-theme="<slug>"] block below + a matching entry in
+     THEMES inside akira-theme-picker.js. Keep the 7 semantic color slots.
+   ============================================================= */
+
+/* ---------------------------------------------------------------
+   Reserved: Heritage Red (brand red, independent of accent)
+   --------------------------------------------------------------- */
+:root {
+  --akira-heritage-red: #D92028;
+}
+
+/* ---------------------------------------------------------------
+   Default theme: AKIRA Red (dark, Heritage Red accent)
+   --------------------------------------------------------------- */
+:root {
+  --color-bg:           #0A0A0A;
+  --color-card:         #141418;
+  --color-surface:      #1F1F25;
+  --color-text-primary: #F5F5F5;
+  --color-text-muted:   #C1C1CF;  /* Rick 2026-04-22: lighter than 9CA3AF for readability */
+  --color-accent:       #D92028;  /* Heritage Red */
+  --color-border:       #27272E;
+}
+
+/* ---------------------------------------------------------------
+   AKIRA Dark (template default — pink accent)
+   --------------------------------------------------------------- */
+[data-theme="akira-dark"] {
+  --color-bg:           #0B0B0C;
+  --color-card:         #111114;
+  --color-surface:      #1A1A1F;
+  --color-text-primary: #F5F5F5;
+  --color-text-muted:   #C1C1CF;  /* Rick 2026-04-22 */
+  --color-accent:       #EC4899;
+  --color-border:       #1F1F23;
+}
+
+/* ---------------------------------------------------------------
+   Midnight (deep purple accent)
+   --------------------------------------------------------------- */
+[data-theme="midnight"] {
+  --color-bg:           #09090B;
+  --color-card:         #121217;
+  --color-surface:      #1E1E24;
+  --color-text-primary: #FAFAFA;
+  --color-text-muted:   #C1C1CF;  /* Rick 2026-04-22 */
+  --color-accent:       #8B5CF6;
+  --color-border:       #27272A;
+}
+
+/* ---------------------------------------------------------------
+   Forest (dark green)
+   --------------------------------------------------------------- */
+[data-theme="forest"] {
+  --color-bg:           #1C211C;
+  --color-card:         #252B25;
+  --color-surface:      #2D342D;
+  --color-text-primary: #E6EEE6;
+  --color-text-muted:   #9CA3AF;
+  --color-accent:       #22C55E;
+  --color-border:       #374151;
+}
+
+/* ---------------------------------------------------------------
+   Dark Coral (warm dark)
+   --------------------------------------------------------------- */
+[data-theme="coral-dark"] {
+  --color-bg:           #140D0B;
+  --color-card:         #1F1512;
+  --color-surface:      #2B1D19;
+  --color-text-primary: #FFF0EC;
+  --color-text-muted:   #A38C85;
+  --color-accent:       #F97316;
+  --color-border:       #3D2A25;
+}
+
+/* ---------------------------------------------------------------
+   Ocean (light, sky blue accent)
+   --------------------------------------------------------------- */
+[data-theme="ocean"] {
+  --color-bg:           #F8FAFC;
+  --color-card:         #FFFFFF;
+  --color-surface:      #F1F5F9;
+  --color-text-primary: #0F172A;
+  --color-text-muted:   #64748B;
+  --color-accent:       #0EA5E9;
+  --color-border:       #E2E8F0;
+}
+
+/* ---------------------------------------------------------------
+   Coral (light, warm orange accent)
+   --------------------------------------------------------------- */
+[data-theme="coral"] {
+  --color-bg:           #FFFBF9;
+  --color-card:         #FFFFFF;
+  --color-surface:      #FEF1EC;
+  --color-text-primary: #2D1B14;
+  --color-text-muted:   #8C736A;
+  --color-accent:       #F97316;
+  --color-border:       #F3E6E1;
+}
+
+/* =============================================================
+   Structural styles
+   ============================================================= */
+
+/* Default (Modern iOS/Web) */
+:root {
+  --radius-card:      14px;
+  --radius-base:      10px;
+  --radius-bar:       6px;
+  --shadow-card:      0 10px 25px -5px rgba(0, 0, 0, 0.25),
+                      0 8px 10px -6px rgba(0, 0, 0, 0.15);
+  --border-thickness: 1px;
+}
+
+/* Material Design 3 */
+[data-style="material"] {
+  --radius-card:      8px;
+  --radius-base:      4px;
+  --radius-bar:       4px;
+  --shadow-card:      0 3px 6px rgba(0,0,0,0.20),
+                      0 3px 6px rgba(0,0,0,0.25);
+  --border-thickness: 0px;
+}
+
+/* Brutalist / Flat */
+[data-style="flat"] {
+  --radius-card:      0px;
+  --radius-base:      0px;
+  --radius-bar:       0px;
+  --shadow-card:      6px 6px 0px var(--color-border);
+  --border-thickness: 2px;
+}
+
+/* =============================================================
+   Smooth transitions when theme/style changes
+   Apply to any element that uses themed properties.
+   ============================================================= */
+.akira-themed {
+  transition:
+    background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    border-width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}

@@ -1,0 +1,83 @@
+# AKIRA Design System
+
+> React + CSS-variable design system for AKIRA internal apps. Every app uses the same `AppShell` (rail + top bar) with theme-able tokens. Reference components by name in prompts — names are stable.
+
+## Install
+
+```json
+{ "dependencies": { "@akira/design-system": "github:ShopakiraLabs/akira-design-system" } }
+```
+
+```tsx
+import '@akira/design-system/src/tokens/tokens.css';
+import '@akira/design-system/src/tokens/components.css';
+import { AppShell, LeftRail, RailLink, TopBar, SearchBar, Toolbelt, Tile, PinChip, PinStrip, SectionHeader } from '@akira/design-system';
+```
+
+## Layout pattern (use this exact shape)
+
+```tsx
+<AppShell
+  rail={<LeftRail appName="…" subtitle="…">…RailLinks…</LeftRail>}
+  topBar={<TopBar appName="…" center={<SearchBar />} end={<Toolbelt profile={…} />} />}
+  impersonation={<ImpersonationBanner /* default hidden */ />}
+>
+  page content here
+</AppShell>
+```
+
+The `Toolbelt` is the standard right-side cluster: **Appearance → Settings → Profile**, in that order, every time.
+
+## Components
+
+- **`AppShell`** — outer 2-col layout. Props: `rail`, `topBar`, `impersonation?`, `children`.
+- **`LeftRail`** — sticky 240px nav. Props: `appName`, `subtitle?`, `children` (RailLinks), `footer?`.
+- **`RailSectionTitle`** — small uppercase divider between groups in the rail.
+- **`RailLink`** — single nav row. Props: `label`, `icon?`, `active?`, `href?`, `onClick?`. Active rows show a Heritage Red dot (theme-independent).
+- **`TopBar`** — horizontal header. Props: `appName?`, `start?`, `center?`, `end?`.
+- **`SearchBar`** — top-bar input. Props: `placeholder?`, `value?`, `onChange?`, `onSubmit?`.
+- **`Toolbelt`** — right-side cluster. Props: `appearance?` (default true), `settings?`, `profile?`. Renders ThemePicker → SettingsMenu → ProfileMenu in that order.
+- **`ThemePicker`** — gear button + theme/style popover. Self-wiring, no props needed.
+- **`SettingsMenu`** — cog button + sectioned dropdown. Props: `sections?` or `items?`.
+- **`ProfileMenu`** — avatar button + account dropdown. Props: `name`, `email?`, `initials?`, `items[]`.
+- **`ImpersonationBanner`** — yellow strip when admin is acting as another user. **Default hidden.** Props: `visible?` (default false), `targetName`, `reason?`, `onExit?`.
+- **`Tile`** — canonical card. Props: `kicker?`, `kickerIcon?`, `title`, `description?`, `cta?`, `href?` or `onClick?`.
+- **`PinStrip`** — horizontal-scroll wrapper.
+- **`PinChip`** — pinned-item chip. Props: `label`, `icon?`, `href?`, `onClick?`.
+- **`SectionHeader`** — row above tile grids. Props: `title`, `subtitle?`, `actions?`.
+
+For tile grids, wrap in `<div className="akira-tile-grid">` (CSS class — auto responsive).
+
+## Tokens (use these CSS variables, never hardcode color)
+
+Color: `--color-bg`, `--color-card`, `--color-surface`, `--color-text-primary`, `--color-text-muted`, `--color-accent`, `--color-border`.
+Reserved: `--akira-heritage-red` (#D92028) — only for AKIRA brand indicators (active rail-link dot). Never use as a substitute for `--color-accent`.
+Structural: `--radius-card`, `--radius-base`, `--radius-bar`, `--shadow-card`, `--border-thickness`.
+
+## Themes (data-theme on <html>)
+
+`default` (AKIRA Red dark, no attr), `akira-dark`, `midnight`, `forest`, `coral-dark`, `ocean` (light), `coral` (light).
+
+## Styles (data-style on <html>)
+
+`modern` (no attr — rounded, soft shadows, 1px borders), `material` (less round, elevation shadows, 0 borders), `flat` (Brutalist — square, hard shadows, 2px borders).
+
+## Hooks
+
+- **`useAkiraTheme()`** — `{ theme, style, setTheme(slug), setStyle(slug) }`. Mirrors `<html data-theme>` / `<html data-style>` and persists to localStorage.
+
+## Brand rules (non-negotiable)
+
+1. AKIRA in copy is always ALL-CAPS (except the URL `akira.com`).
+2. Heritage Red (#D92028) is reserved — only for AKIRA brand indicators, never as substitute accent.
+3. System fonts only in product UI (no Google Fonts).
+4. Toolbelt order: Appearance → Settings → Profile, always.
+5. For Material style, `--border-thickness` is 0 — the Tile and other hover states fall back to a 2px box-shadow ring on `[data-style="material"]` so the accent stays visible.
+
+## When generating components
+
+- Always use the semantic color tokens — `var(--color-card)` not `#141418`.
+- Always wrap apps in `<AppShell>`. Don't invent your own layout grid.
+- Don't reorder the Toolbelt cluster.
+- For new card-like components, base their hover state on `border-color: var(--color-accent)` AND add a `[data-style="material"]` override using `box-shadow: 0 0 0 2px var(--color-accent), var(--shadow-card)` so Material's 0-border doesn't kill the hover affordance.
+- Do not add new themes or styles unless explicitly asked. Use the existing 7 × 3.

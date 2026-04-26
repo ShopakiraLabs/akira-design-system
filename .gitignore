@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.DS_Store
+.vscode/
+.idea/
+*.log
+.env
+.env.local
+coverage/
+
+# vite dev-server runtime cache (regenerated on every run)
+**/*.timestamp-*.mjs
+.vite/

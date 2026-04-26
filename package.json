@@ -1,0 +1,49 @@
+{
+  "name": "@akira/design-system",
+  "version": "0.1.0",
+  "description": "AKIRA Design System — shared React components, tokens, and layout for AKIRA internal apps.",
+  "private": false,
+  "type": "module",
+  "license": "UNLICENSED",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": [
+    "src",
+    "docs",
+    "README.md",
+    "llms.txt"
+  ],
+  "scripts": {
+    "dev": "vite --config examples/basic/vite.config.ts",
+    "build": "tsc --noEmit && vite build --config examples/basic/vite.config.ts",
+    "preview": "vite preview --config examples/basic/vite.config.ts"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "lucide-react": "^0.460.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  },
+  "keywords": [
+    "akira",
+    "design-system",
+    "react",
+    "tailwind"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShopakiraLabs/akira-design-system.git"
+  }
+}
