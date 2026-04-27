@@ -34,12 +34,12 @@ export function App() {
       rail={
         <LeftRail appName="AKIRA OS" subtitle="Internal Apps">
           <RailSectionTitle>Workspace</RailSectionTitle>
-          <RailLink label="Home" icon={<Home size={16} />} active />
-          <RailLink label="Reports" icon={<BarChart3 size={16} />} />
-          <RailLink label="Catalog" icon={<Package size={16} />} />
+          <RailLink label="Home" icon={<Home size={16} />} active count={5} />
+          <RailLink label="Reports" icon={<BarChart3 size={16} />} count={4} />
+          <RailLink label="Catalog" icon={<Package size={16} />} count={2} />
           <RailSectionTitle>Operations</RailSectionTitle>
-          <RailLink label="Wire schedule" icon={<Truck size={16} />} />
-          <RailLink label="Employee directory" icon={<Users size={16} />} />
+          <RailLink label="Wire schedule" icon={<Truck size={16} />} count={3} />
+          <RailLink label="Employee directory" icon={<Users size={16} />} count={1} />
         </LeftRail>
       }
       topBar={

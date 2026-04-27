@@ -76,7 +76,10 @@ STEP 3 — Update the app with the following rules:
    Do NOT include <ImpersonationBanner> unless this app needs admin impersonation.
 
 3. NAV — Map every existing nav item to a <RailLink> with a lucide icon.
-   Mark the current route with `active`.
+   Mark the current route with `active`. If the rail item represents a
+   section that contains a knowable number of children (e.g. tiles in a
+   team section), pass that number as `count={N}` — RailLink renders it
+   as a zero-padded 2-digit tally on the right side of the row.
 
 4. CARDS — Replace any card-like components with <Tile>. Set:
      - kicker:      uppercase eyebrow (existing category/tag)

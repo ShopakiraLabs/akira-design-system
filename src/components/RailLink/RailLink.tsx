@@ -2,9 +2,17 @@
  * RailLink · single nav row inside the LeftRail.
  *
  * Either renders an `<a>` (when `href` is set) or a `<button>` (when only
- * `onClick` is set). Active state shows a Heritage Red dot — that dot is
- * theme-independent on purpose, per the brand spec: it's an AKIRA brand
- * marker, not the variable accent color.
+ * `onClick` is set).
+ *
+ * Layout: dot · icon · label · optional count badge.
+ *
+ * The dot is ALWAYS rendered (muted gray when inactive, Heritage Red when
+ * active). The Heritage Red dot is theme-independent on purpose, per the
+ * brand spec: it's an AKIRA brand marker, not the variable accent color.
+ *
+ * The optional `count` prop renders a small monospace tally on the right
+ * — useful for showing how many tiles live in a section, how many users
+ * are pending, etc. Omit the prop entirely to hide the count column.
  */
 import type { MouseEventHandler, ReactNode } from "react";
 
@@ -19,14 +27,29 @@ export interface RailLinkProps {
   href?: string;
   /** Click handler. Used when `href` is not provided. */
   onClick?: MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
+  /**
+   * Optional small numeric tally rendered on the right side of the row.
+   * Pass a number for a zero-padded 2-digit display ("05", "12", "00"),
+   * or a string to render verbatim. Omit to hide.
+   */
+  count?: number | string;
 }
 
-export function RailLink({ label, icon, active, href, onClick }: RailLinkProps) {
+function formatCount(count: number | string): string {
+  if (typeof count === "string") return count;
+  return count.toString().padStart(2, "0");
+}
+
+export function RailLink({ label, icon, active, href, onClick, count }: RailLinkProps) {
   const className = `akira-rail-link${active ? " is-active" : ""}`;
   const inner = (
     <>
-      {icon ? <span aria-hidden="true">{icon}</span> : <span className="akira-rail-link-dot" aria-hidden="true" />}
+      <span className="akira-rail-link-dot" aria-hidden="true" />
+      {icon ? <span className="akira-rail-link-icon" aria-hidden="true">{icon}</span> : null}
       <span className="akira-rail-link-label">{label}</span>
+      {count !== undefined ? (
+        <span className="akira-rail-link-count" aria-hidden="true">{formatCount(count)}</span>
+      ) : null}
     </>
   );
 
