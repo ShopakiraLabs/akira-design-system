@@ -57,7 +57,7 @@
 .akira-rail-brand {
   font-weight: 800;
   font-size: 16px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.24em;
   color: var(--color-text-primary);
 }
 /* Two-tone wordmark: every word after the first inherits muted color. */
