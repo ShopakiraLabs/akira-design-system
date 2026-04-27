@@ -60,6 +60,12 @@
   letter-spacing: 0.04em;
   color: var(--color-text-primary);
 }
+/* Two-tone wordmark: every word after the first inherits muted color. */
+.akira-rail-brand-accent {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+  font-weight: 800;
+}
 .akira-rail-brand-sub {
   font-size: 11px;
   text-transform: uppercase;

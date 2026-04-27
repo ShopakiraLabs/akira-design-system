@@ -37,27 +37,33 @@ Replace `[APP NAME]`, `[WHAT THE APP DOES]`, and the page list with your own. Bo
 
 ## Adding the design system to an existing app
 
-> Bolt currently can't add a design system to an already-created project. The workflow below uses Bolt's GitHub integration to do it manually.
+> Bolt's design-system feature only attaches to **new** projects, and Bolt's chat agent can't fetch URLs at prompt time. The workflow below routes around both — everything happens inside Bolt's chat by giving the agent shell commands it *will* execute and files it *will* read.
 
-If you have an app that was started without a design system and you want it to look like the AKIRA system:
+The retrofit happens entirely in your existing Bolt project's chat. No local clone, no manual `package.json` edits, no GitHub integration required. This works for React + TypeScript + Vite projects (which is what Bolt scaffolds by default).
 
-1. **Push the existing app to GitHub** (if it's not already there) using Bolt's GitHub integration.
-2. **Clone it locally** or open it in another editor.
-3. **Install the design system** by adding to `package.json`:
-   ```json
-   { "dependencies": { "@akira/design-system": "github:ShopakiraLabs/akira-design-system" } }
-   ```
-4. Run `npm install`.
-5. **Paste this redesign prompt into bolt.new** (see next section) — the agent will do the actual conversion.
+The complete copy-paste prompt is below in [The "redesign with AKIRA" prompt](#the-redesign-with-akira-prompt). It does three things in order: (1) installs the design system from GitHub, (2) reads the docs out of `node_modules/` so the agent has the canonical layout and component list in context, (3) applies the redesign rules.
+
+If the agent ever balks at reading from `node_modules/`, you can also paste `llms.txt` from this repo directly into the chat as a follow-up — that's ~4.8KB of distilled rules and is the single most useful context file the agent could have.
 
 ## The "redesign with AKIRA" prompt
 
-Use this whenever you're converting an existing app's UI to the AKIRA design system:
+Paste this as a single chat message in your existing Bolt project. It bundles the install + the read + the redesign rules so you don't have to chain prompts:
 
 ```
-I'm adding the AKIRA Design System to this app. The repo is github:ShopakiraLabs/akira-design-system. It's already in package.json as @akira/design-system.
+I want to apply the AKIRA Design System to this existing app. Do this in
+order, in one pass.
 
-Please update the app to use the AKIRA Design System with the following rules:
+STEP 1 — Install the design system from GitHub:
+
+  npm install github:ShopakiraLabs/akira-design-system
+
+STEP 2 — Read the design-system docs so you understand what's available:
+
+  cat node_modules/@akira/design-system/llms.txt
+  cat node_modules/@akira/design-system/docs/layout.md
+  cat node_modules/@akira/design-system/docs/foundations.md
+
+STEP 3 — Update the app with the following rules:
 
 1. STYLES — Add these two imports to main.tsx:
      import '@akira/design-system/src/tokens/tokens.css';

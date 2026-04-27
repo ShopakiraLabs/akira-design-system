@@ -31,12 +31,12 @@ The `Toolbelt` is the standard right-side cluster: **Appearance → Settings →
 ## Components
 
 - **`AppShell`** — outer 2-col layout. Props: `rail`, `topBar`, `impersonation?`, `children`.
-- **`LeftRail`** — sticky 240px nav. Props: `appName`, `subtitle?`, `children` (RailLinks), `footer?`.
+- **`LeftRail`** — sticky 240px nav. Props: `appName` (string or ReactNode), `subtitle?`, `children` (RailLinks), `footer?`. **Two-tone wordmark**: when `appName` is a string with a space, the first word is primary and everything after is muted (e.g. `"AKIRA OS"` → `AKIRA` + muted ` OS`). Pass a ReactNode to opt out.
 - **`RailSectionTitle`** — small uppercase divider between groups in the rail.
 - **`RailLink`** — single nav row. Props: `label`, `icon?`, `active?`, `href?`, `onClick?`. Active rows show a Heritage Red dot (theme-independent).
 - **`TopBar`** — horizontal header. Props: `appName?`, `start?`, `center?`, `end?`.
 - **`SearchBar`** — top-bar input. Props: `placeholder?`, `value?`, `onChange?`, `onSubmit?`.
-- **`Toolbelt`** — right-side cluster. Props: `appearance?` (default true), `settings?`, `profile?`. Renders ThemePicker → SettingsMenu → ProfileMenu in that order.
+- **`Toolbelt`** — right-side cluster. Props: `appearance?` (default true), `settings?` (default: placeholder items so the gear always renders — pass your own array to override, or `false` to hide), `profile?`. Renders ThemePicker → SettingsMenu → ProfileMenu in that order. **All three should always be visible** in AKIRA apps unless there's a specific reason to hide one.
 - **`ThemePicker`** — gear button + theme/style popover. Self-wiring, no props needed.
 - **`SettingsMenu`** — cog button + sectioned dropdown. Props: `sections?` or `items?`.
 - **`ProfileMenu`** — avatar button + account dropdown. Props: `name`, `email?`, `initials?`, `items[]`.
