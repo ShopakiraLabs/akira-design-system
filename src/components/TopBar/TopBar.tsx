@@ -5,9 +5,11 @@
  * Settings · Profile). The toolbelt is rendered separately as `<Toolbelt>`
  * so apps can swap any cluster.
  *
- * For mobile, the rail is typically hidden; the TopBar then becomes the
- * primary navigation surface. We don't implement a hamburger here — apps
- * can pass any control they want via the `start` slot.
+ * For mobile (< --bp-mobile / 768px), the rail is automatically collapsed
+ * to an off-canvas drawer by AppShell. Apps should drop `<MenuButton />`
+ * into the `start` slot — it auto-toggles the drawer via AkiraShellContext
+ * and is CSS-hidden on desktop. Apps that want a custom hamburger can
+ * still wire their own button to `useAkiraShell()`.
  */
 import type { ReactNode } from "react";
 

@@ -1,6 +1,6 @@
 {
   "name": "@akira/design-system",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AKIRA Design System — shared React components, tokens, and layout for AKIRA internal apps.",
   "private": false,
   "type": "module",

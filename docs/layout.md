@@ -77,9 +77,51 @@ Pinned shortcuts go in a `<PinStrip>` with `<PinChip>`s inside. The strip is hor
 
 Use `<SectionHeader title="…" subtitle="…" actions={…} />` between groups of tiles. The `actions` slot is for "View all" links or filter chips.
 
+## Mobile (< 768px) — drawer + hamburger
+
+As of 2026-05-14 the responsive behavior is baked into the design system itself. You don't need to wire any media queries or state for the standard pattern:
+
+- Below `--bp-mobile` (768px) the LeftRail collapses to an off-canvas drawer that slides in from the left.
+- `<AppShell>` owns the open/closed state, the backdrop, Esc-to-close, and body scroll-lock.
+- Drop `<MenuButton />` into `TopBar.start` and it does the rest — CSS-hidden on desktop, toggle on mobile, correct `aria-expanded` / `aria-controls`.
+
+```tsx
+import { AppShell, TopBar, LeftRail, MenuButton, Toolbelt, SearchBar } from "@akira/design-system";
+
+<AppShell
+  rail={<LeftRail appName="AKIRA OS">…</LeftRail>}
+  topBar={
+    <TopBar
+      start={<MenuButton />}                      {/* visible only < 768px */}
+      appName="AKIRA OS"
+      center={<SearchBar placeholder="Search…" />}
+      end={<Toolbelt profile={…} />}
+    />
+  }
+>
+  …
+</AppShell>
+```
+
+If you need to programmatically open or close the drawer (deep-link, "open menu" CTA inside content), use the hook directly:
+
+```tsx
+import { useAkiraShell } from "@akira/design-system";
+
+function MyDeepLinkButton() {
+  const { setRailOpen } = useAkiraShell();
+  return <button onClick={() => setRailOpen(true)}>Open menu</button>;
+}
+```
+
+Tile grids and SectionHeaders already reflow on mobile — `akira-tile-grid` becomes a single column, padding tightens, type scales down. No app-side work required.
+
+The mobile breakpoint is a single hard split, not a tablet-vs-desktop spectrum: a 240px rail fits fine on a 768px viewport. If a future app needs to collapse the rail on tablets too, do it app-side; don't change the system default.
+
 ## What NOT to invent
 
-- **Don't reinvent the rail.** The 240px fixed width works on every screen ≥ 1024px; below that, hide it via media query and put a hamburger in `TopBar.start`.
+- **Don't reinvent the rail.** The 240px fixed width works at every screen ≥ 768px. Below that, the drawer pattern above kicks in automatically.
 - **Don't reorder the Toolbelt.**
 - **Don't add a separate "user info" footer in the rail** when the avatar menu in the top right already covers that. The brand skill records this decision.
 - **Don't hardcode colors.** Use semantic CSS variables.
+- **Don't roll your own hamburger.** Use `<MenuButton />` so the aria attrs and drawer wiring stay consistent across apps.

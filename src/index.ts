@@ -35,6 +35,11 @@ export type { UseAkiraThemeReturn } from "./hooks/useAkiraTheme";
 export { AppShell } from "./components/AppShell/AppShell";
 export type { AppShellProps } from "./components/AppShell/AppShell";
 
+// Shell runtime state (consumed by LeftRail + MenuButton; also exported
+// so apps that build custom controls can read/toggle drawer state).
+export { useAkiraShell } from "./components/AppShell/AkiraShellContext";
+export type { AkiraShellContextValue } from "./components/AppShell/AkiraShellContext";
+
 export { LeftRail, RailSectionTitle } from "./components/LeftRail/LeftRail";
 export type { LeftRailProps } from "./components/LeftRail/LeftRail";
 
@@ -43,6 +48,9 @@ export type { RailLinkProps } from "./components/RailLink/RailLink";
 
 export { TopBar } from "./components/TopBar/TopBar";
 export type { TopBarProps } from "./components/TopBar/TopBar";
+
+export { MenuButton } from "./components/MenuButton/MenuButton";
+export type { MenuButtonProps } from "./components/MenuButton/MenuButton";
 
 export { SearchBar } from "./components/SearchBar/SearchBar";
 export type { SearchBarProps } from "./components/SearchBar/SearchBar";

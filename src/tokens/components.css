@@ -21,11 +21,17 @@
 
 /* -------------------------------------------------------------
    AppShell · two-column layout (rail + main)
+   Mobile (< --bp-mobile / 768px): the rail collapses to an
+   off-canvas drawer (see .akira-rail mobile block below) and
+   the shell becomes a single-column flow. AppShell renders a
+   `.akira-shell-backdrop` element which is invisible on desktop
+   and only opacifies + intercepts clicks when the drawer is open.
    ------------------------------------------------------------- */
 .akira-shell {
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100vh;
+  position: relative;
 }
 .akira-shell-main {
   display: flex;
@@ -38,8 +44,43 @@
   overflow-y: auto;
 }
 
+/* Backdrop used by the mobile drawer. Always in the DOM (AppShell renders
+   it unconditionally) so the fade transition has something to animate. */
+.akira-shell-backdrop {
+  display: none; /* desktop: removed from layout, no paint cost */
+}
+
+@media (max-width: 767px) {
+  .akira-shell {
+    display: block;       /* single column flow */
+    min-height: 100vh;
+  }
+  .akira-shell-content {
+    padding: 16px;        /* tighter gutters on phones */
+  }
+  .akira-shell-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 60;          /* above topbar (50), below rail (70) */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .akira-shell-rail-open .akira-shell-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 /* -------------------------------------------------------------
    LeftRail
+   Desktop: sticky 240px column. Mobile (< 768px): off-canvas
+   drawer that slides in from the left when `.is-open` is set
+   by AppShell. Width is capped at 86vw with a max of 320px so
+   on tiny phones it doesn't take over but on larger phones it
+   has room to breathe.
    ------------------------------------------------------------- */
 .akira-rail {
   background: var(--color-card);
@@ -49,6 +90,24 @@
   height: 100vh;
   position: sticky;
   top: 0;
+}
+
+@media (max-width: 767px) {
+  .akira-rail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(86vw, 320px);
+    height: 100vh;
+    height: 100dvh;             /* honor mobile-browser dynamic chrome */
+    z-index: 70;                /* above backdrop (60), above topbar (50) */
+    transform: translateX(-100%);
+    transition: transform 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 8px 0 24px -4px rgba(0, 0, 0, 0.45);
+  }
+  .akira-rail.is-open {
+    transform: translateX(0);
+  }
 }
 .akira-rail-header {
   padding: 18px 18px 12px 18px;
@@ -183,6 +242,43 @@
   margin: 0 4px;
 }
 
+/* MenuButton — hamburger that toggles the mobile drawer.
+   Hidden on desktop because the rail is always visible. Apps that
+   want it always shown (or always hidden) can pass `className` and
+   override; the default is "show only below --bp-mobile." */
+.akira-menu-btn {
+  display: none;                     /* desktop: hidden */
+  background: var(--color-surface);
+  border: var(--border-thickness) solid var(--color-border);
+  border-radius: var(--radius-base);
+  color: var(--color-text-primary);
+  padding: 6px 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  line-height: 0;                    /* tightens the icon-only box */
+}
+.akira-menu-btn:hover { background: var(--color-card); }
+
+@media (max-width: 767px) {
+  .akira-menu-btn { display: inline-flex; }
+  .akira-topbar {
+    padding: 10px 14px;              /* tighter on phones */
+    gap: 10px;
+    flex-wrap: wrap;                 /* search wraps to its own row */
+  }
+  /* Allow the center slot to wrap onto its own row at full width.
+     Tagging the SearchBar with flex-basis: 100% in mobile makes it
+     line-break below the menu/name/toolbelt row. */
+  .akira-topbar .akira-search {
+    order: 10;
+    flex-basis: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
 /* -------------------------------------------------------------
    SearchBar
    ------------------------------------------------------------- */
@@ -194,9 +290,9 @@
   border: var(--border-thickness) solid var(--color-border);
   border-radius: var(--radius-base);
   padding: 6px 12px;
-  min-width: 280px;
+  min-width: 0;            /* allow flex shrink to 0 — no horizontal overflow */
+  flex: 1 1 280px;         /* desktop: prefer 280px, grow up to max-width */
   max-width: 480px;
-  flex: 1;
   color: var(--color-text-muted);
 }
 .akira-search input {
@@ -509,3 +605,52 @@
   background: var(--color-surface);
 }
 .akira-style-row .hint { font-size: 11px; color: var(--color-text-muted); }
+
+/* =============================================================
+   Mobile (< --bp-mobile / 768px) consolidated overrides
+   -------------------------------------------------------------
+   Tightens layout, reflows tile grids to a single column, scales
+   section type down, and ensures content never causes horizontal
+   scroll. AppShell + LeftRail + TopBar have their own mobile blocks
+   immediately under their desktop definitions; this block is for
+   everything else.
+   ============================================================= */
+@media (max-width: 767px) {
+  /* Tile grid: drop the 260px floor so 360px-wide phones get a
+     single comfortable column instead of one cramped 260px tile
+     with leftover gutter. */
+  .akira-tile-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .akira-tile {
+    padding: 14px 16px;
+  }
+  .akira-tile-title { font-size: 16px; }
+
+  /* SectionHeader: vertical stack so actions don't squeeze the title. */
+  .akira-section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    margin: 20px 0 10px;
+  }
+  .akira-section-title { font-size: 16px; }
+
+  /* Pinstrip already scrolls horizontally — just trim the chip size
+     and reduce the page-edge bleed. */
+  .akira-pin-chip { padding: 7px 12px; font-size: 12px; }
+
+  /* Theme picker swatch grid: 4 cols becomes cramped on phones. */
+  .akira-swatch-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Menus / popovers: never wider than the viewport. */
+  .akira-menu {
+    min-width: 0;
+    max-width: calc(100vw - 24px);
+  }
+
+  /* Toolbelt: keep buttons but tighten gaps so it doesn't overflow. */
+  .akira-icon-btn { padding: 6px 8px; }
+  .akira-icon-btn .akira-icon-btn-label { display: none; }  /* opt-in label */
+}

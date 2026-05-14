@@ -46,6 +46,23 @@
 }
 
 /* ---------------------------------------------------------------
+   Responsive breakpoints (Rick 2026-05-14)
+   The system has a single hard split: below --bp-mobile, the
+   LeftRail collapses to an off-canvas drawer accessed via a
+   hamburger button in the TopBar.start slot. Above that width,
+   the classic two-column shell applies. No tablet middle-ground —
+   240px of rail still fits comfortably on a 768px viewport.
+   Use these as CSS custom-property fallbacks in JS / matchMedia
+   strings. Media queries themselves must inline the pixel value
+   because CSS @media doesn't read custom properties.
+   --------------------------------------------------------------- */
+:root {
+  --bp-mobile: 768px;   /* below: drawer + hamburger */
+  --bp-tablet: 1024px;  /* reserved for future use */
+  --bp-desktop: 1280px; /* reserved for future use */
+}
+
+/* ---------------------------------------------------------------
    Default theme: AKIRA Red (dark, Heritage Red accent)
    --------------------------------------------------------------- */
 :root {

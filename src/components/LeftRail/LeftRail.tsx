@@ -15,6 +15,7 @@
  * rendered verbatim with no split.
  */
 import type { ReactNode } from "react";
+import { useAkiraShell } from "../AppShell/AkiraShellContext";
 
 export interface LeftRailProps {
   /**
@@ -56,8 +57,22 @@ export function LeftRail({
   footer,
   className,
 }: LeftRailProps) {
+  // Pull shell state so we can flag `.is-open` for the mobile drawer and
+  // surface aria-hidden when the rail is off-canvas. Outside an AppShell
+  // the hook returns no-op defaults (isMobile:false, railOpen:false) so
+  // this component is still safe to render stand-alone.
+  const { railId, railOpen, isMobile } = useAkiraShell();
+  const cls =
+    `akira-rail` +
+    (railOpen ? " is-open" : "") +
+    (className ? ` ${className}` : "");
   return (
-    <aside className={`akira-rail${className ? ` ${className}` : ""}`}>
+    <aside
+      id={railId}
+      className={cls}
+      // Tell AT users the drawer is hidden when off-canvas on mobile.
+      aria-hidden={isMobile && !railOpen ? true : undefined}
+    >
       <div className="akira-rail-header">
         <div className="akira-rail-brand">{renderWordmark(appName)}</div>
         {subtitle ? <div className="akira-rail-brand-sub">{subtitle}</div> : null}

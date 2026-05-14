@@ -19,7 +19,14 @@ import { AppShell, LeftRail, RailLink, TopBar, SearchBar, Toolbelt, Tile, PinChi
 ```tsx
 <AppShell
   rail={<LeftRail appName="…" subtitle="…">…RailLinks…</LeftRail>}
-  topBar={<TopBar appName="…" center={<SearchBar />} end={<Toolbelt profile={…} />} />}
+  topBar={
+    <TopBar
+      start={<MenuButton />}              {/* hamburger — auto-hidden ≥768px */}
+      appName="…"
+      center={<SearchBar />}
+      end={<Toolbelt profile={…} />}
+    />
+  }
   impersonation={<ImpersonationBanner /* default hidden */ />}
 >
   page content here
@@ -28,13 +35,16 @@ import { AppShell, LeftRail, RailLink, TopBar, SearchBar, Toolbelt, Tile, PinChi
 
 The `Toolbelt` is the standard right-side cluster: **Appearance → Settings → Profile**, in that order, every time.
 
+**Mobile (< 768px):** the rail collapses to an off-canvas drawer that `<AppShell>` controls automatically. Drop `<MenuButton />` into `TopBar.start` and you're done — it's CSS-hidden on desktop, toggles the drawer on phones, and wires the correct ARIA. See `docs/layout.md` for the full responsive contract.
+
 ## Components
 
 - **`AppShell`** — outer 2-col layout. Props: `rail`, `topBar`, `impersonation?`, `children`.
 - **`LeftRail`** — sticky 240px nav. Props: `appName` (string or ReactNode), `subtitle?`, `children` (RailLinks), `footer?`. **Two-tone wordmark**: when `appName` is a string with a space, the first word is primary and everything after is muted (e.g. `"AKIRA OS"` → `AKIRA` + muted ` OS`). Pass a ReactNode to opt out.
 - **`RailSectionTitle`** — small uppercase divider between groups in the rail.
 - **`RailLink`** — single nav row. Layout: **dot · icon · label · optional count**. Props: `label`, `icon?`, `active?`, `href?`, `onClick?`, `count?` (number → zero-padded 2-digit like `"05"`; string → verbatim; omit to hide). The dot is **always rendered** — muted when inactive, Heritage Red when `active` (theme-independent).
-- **`TopBar`** — horizontal header. Props: `appName?`, `start?`, `center?`, `end?`.
+- **`TopBar`** — horizontal header. Props: `appName?`, `start?`, `center?`, `end?`. On mobile, drop `<MenuButton />` into `start`.
+- **`MenuButton`** — hamburger that toggles the AppShell mobile drawer. Auto-hidden ≥768px. Reads `AkiraShellContext`; no props required. Custom icon via `icon?`, custom label via `ariaLabel?`.
 - **`SearchBar`** — top-bar input. Props: `placeholder?`, `value?`, `onChange?`, `onSubmit?`.
 - **`Toolbelt`** — right-side cluster. Props: `appearance?` (default true), `settings?` (default: placeholder items so the gear always renders — pass your own array to override, or `false` to hide), `profile?`. Renders ThemePicker → SettingsMenu → ProfileMenu in that order. **All three should always be visible** in AKIRA apps unless there's a specific reason to hide one.
 - **`ThemePicker`** — gear button + theme/style popover. Self-wiring, no props needed.
@@ -65,6 +75,11 @@ Structural: `--radius-card`, `--radius-base`, `--radius-bar`, `--shadow-card`, `
 ## Hooks
 
 - **`useAkiraTheme()`** — `{ theme, style, setTheme(slug), setStyle(slug) }`. Mirrors `<html data-theme>` / `<html data-style>` and persists to localStorage.
+- **`useAkiraShell()`** — `{ isMobile, railOpen, setRailOpen(b), toggleRail(), railId }`. Read mobile-drawer state and drive it from any nested component (e.g. an in-content "Open menu" CTA). Outside an `<AppShell>` it returns no-op defaults so consumers don't crash.
+
+## Responsive
+
+Single breakpoint at **768px** (`--bp-mobile`). Above it: standard two-column shell. Below it: rail becomes an off-canvas drawer; tile grids collapse to one column; padding tightens; SearchBar wraps to its own row. `<AppShell>` handles the drawer state, backdrop, Esc-to-close, and body scroll-lock — apps just drop `<MenuButton />` into `TopBar.start`.
 
 ## Brand rules (non-negotiable)
 
