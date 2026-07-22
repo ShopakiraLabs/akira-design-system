@@ -124,7 +124,7 @@ All visual properties flow through CSS variables defined in `src/tokens/tokens.c
 
 ## Themes
 
-Switch via `data-theme="<slug>"` on `<html>`. The `default` theme uses no attribute. Use the `ThemePicker` component or the `useAkiraTheme()` hook to switch.
+Switch via `data-theme="<slug>"` on `<html>`. The `default` (AKIRA Red) theme uses no attribute — it is the CSS base baked into `:root`. **New users start on `ocean` + `modern`**: `useAkiraTheme()` defaults a fresh browser (no saved preference) to Ocean/Modern, and AKIRA Red remains selectable in the `ThemePicker`. Use the `ThemePicker` component or the `useAkiraTheme()` hook to switch.
 
 | Slug | Name | Mode | Accent |
 |---|---|---|---|

@@ -116,6 +116,26 @@ function MyDeepLinkButton() {
 
 Tile grids and SectionHeaders already reflow on mobile — `akira-tile-grid` becomes a single column, padding tightens, type scales down. No app-side work required.
 
+## Desktop (≥ 768px) — collapsible slim rail
+
+As of 2026-07-22 the LeftRail can collapse to a slim, icon-only strip on desktop:
+
+- A collapse chevron sits in the `LeftRail` header (desktop-only). Clicking it collapses the rail from 240px to a 64px icon-only strip — labels, section titles, counts, the wordmark, and the footer are hidden; only the `RailLink` icons remain.
+- The header chevron flips to a `>` (expand) icon when collapsed and expands the rail again — it is the single desktop toggle. The TopBar `<MenuButton />` stays mobile-only and does **not** appear on desktop.
+- The collapsed/expanded state is **persisted to `localStorage`** (`akira:rail-collapsed`), so it survives reloads.
+- Give every `RailLink` an `icon` — in the collapsed strip the icon is all that shows.
+
+```tsx
+import { useAkiraShell } from "@akira/design-system";
+
+function CollapseFromContent() {
+  const { railCollapsed, toggleRailCollapsed } = useAkiraShell();
+  return <button onClick={toggleRailCollapsed}>{railCollapsed ? "Expand" : "Collapse"} menu</button>;
+}
+```
+
+`<AppShell>` manages this by default; to control it yourself pass the `railCollapsed` + `onRailCollapsedChange` props. Collapse is a desktop-only concept — below 768px the rail is the off-canvas drawer above and the collapse state is ignored.
+
 The mobile breakpoint is a single hard split, not a tablet-vs-desktop spectrum: a 240px rail fits fine on a 768px viewport. If a future app needs to collapse the rail on tablets too, do it app-side; don't change the system default.
 
 ## What NOT to invent

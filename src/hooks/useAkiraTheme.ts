@@ -14,7 +14,13 @@ import { useCallback, useEffect, useState } from "react";
 const STORAGE_THEME = "akira:theme";
 const STORAGE_STYLE = "akira:style";
 
-const DEFAULT_THEME = "default";
+// Slug baked into the CSS :root (no data-theme attribute) — AKIRA Red.
+// The DOM has NO data-theme when this slug is active.
+const BASE_THEME = "default";
+// Theme new users get before they've picked one — Ocean (light). AKIRA Red
+// is still selectable in the picker; this only sets the initial/fallback value
+// for a fresh browser with no saved preference.
+const DEFAULT_THEME = "ocean";
 const DEFAULT_STYLE = "modern";
 
 function read(key: string, fallback: string): string {
@@ -37,7 +43,7 @@ function write(key: string, val: string): void {
 
 function applyTheme(slug: string): void {
   if (typeof document === "undefined") return;
-  if (slug === DEFAULT_THEME) document.documentElement.removeAttribute("data-theme");
+  if (slug === BASE_THEME) document.documentElement.removeAttribute("data-theme");
   else document.documentElement.setAttribute("data-theme", slug);
 }
 

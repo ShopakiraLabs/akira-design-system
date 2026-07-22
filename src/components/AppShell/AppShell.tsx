@@ -44,9 +44,35 @@ export interface AppShellProps {
   railOpen?: boolean;
   /** Notification when the drawer wants to open/close. */
   onRailOpenChange?: (open: boolean) => void;
+  /**
+   * Controlled DESKTOP collapse state. Omit to let AppShell manage its own
+   * (persisted to localStorage). Independent of `railOpen`.
+   */
+  railCollapsed?: boolean;
+  /** Notification when the desktop rail wants to collapse/expand. */
+  onRailCollapsedChange?: (collapsed: boolean) => void;
 }
 
 const MOBILE_QUERY = "(max-width: 767px)";
+const STORAGE_RAIL_COLLAPSED = "akira:rail-collapsed";
+
+function readCollapsed(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(STORAGE_RAIL_COLLAPSED) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeCollapsed(collapsed: boolean): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(STORAGE_RAIL_COLLAPSED, collapsed ? "1" : "0");
+  } catch {
+    /* localStorage may be blocked — fail silently */
+  }
+}
 
 export function AppShell({
   rail,
@@ -56,6 +82,8 @@ export function AppShell({
   className,
   railOpen: railOpenProp,
   onRailOpenChange,
+  railCollapsed: railCollapsedProp,
+  onRailCollapsedChange,
 }: AppShellProps) {
   // Open state — controlled-or-uncontrolled pattern.
   const isControlled = railOpenProp !== undefined;
@@ -68,6 +96,24 @@ export function AppShell({
       onRailOpenChange?.(open);
     },
     [isControlled, onRailOpenChange],
+  );
+
+  // Desktop collapse state — controlled-or-uncontrolled, persisted to
+  // localStorage so the rail stays collapsed across reloads. Only affects
+  // the desktop layout; on mobile the rail is a drawer and this is ignored.
+  const isCollapsedControlled = railCollapsedProp !== undefined;
+  const [internalCollapsed, setInternalCollapsed] = useState<boolean>(readCollapsed);
+  const railCollapsed = isCollapsedControlled ? Boolean(railCollapsedProp) : internalCollapsed;
+
+  const setRailCollapsed = useCallback(
+    (collapsed: boolean) => {
+      if (!isCollapsedControlled) {
+        setInternalCollapsed(collapsed);
+        writeCollapsed(collapsed);
+      }
+      onRailCollapsedChange?.(collapsed);
+    },
+    [isCollapsedControlled, onRailCollapsedChange],
   );
 
   // Mobile detection via matchMedia. SSR-safe (no window during init).
@@ -121,14 +167,18 @@ export function AppShell({
       railOpen,
       setRailOpen,
       toggleRail: () => setRailOpen(!railOpen),
+      railCollapsed,
+      setRailCollapsed,
+      toggleRailCollapsed: () => setRailCollapsed(!railCollapsed),
       railId,
     }),
-    [isMobile, railOpen, setRailOpen, railId],
+    [isMobile, railOpen, setRailOpen, railCollapsed, setRailCollapsed, railId],
   );
 
   const rootCls =
     `akira-app akira-shell` +
     (railOpen ? " akira-shell-rail-open" : "") +
+    (railCollapsed ? " akira-shell-rail-collapsed" : "") +
     (className ? ` ${className}` : "");
 
   return (

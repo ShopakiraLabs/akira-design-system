@@ -18,6 +18,16 @@ export interface AkiraShellContextValue {
   setRailOpen: (open: boolean) => void;
   /** Convenience flip used by the hamburger button. */
   toggleRail: () => void;
+  /**
+   * True when the DESKTOP rail is collapsed to the slim icon-only strip.
+   * Independent of `railOpen` (which is the mobile drawer). Persisted to
+   * localStorage by `<AppShell>` so it survives reloads.
+   */
+  railCollapsed: boolean;
+  /** Imperative setter for the desktop collapse state. */
+  setRailCollapsed: (collapsed: boolean) => void;
+  /** Convenience flip used by the rail collapse chevron + desktop MenuButton. */
+  toggleRailCollapsed: () => void;
   /** Stable id applied to the `<aside>` so the hamburger can `aria-controls` it. */
   railId: string;
 }
@@ -27,6 +37,9 @@ const NOOP_VALUE: AkiraShellContextValue = {
   railOpen: false,
   setRailOpen: () => {},
   toggleRail: () => {},
+  railCollapsed: false,
+  setRailCollapsed: () => {},
+  toggleRailCollapsed: () => {},
   railId: "akira-rail",
 };
 

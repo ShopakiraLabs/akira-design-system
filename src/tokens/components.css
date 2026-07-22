@@ -112,6 +112,10 @@
 .akira-rail-header {
   padding: 18px 18px 12px 18px;
   border-bottom: var(--border-thickness) solid var(--color-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
 }
 .akira-rail-brand {
   font-weight: 800;
@@ -150,6 +154,60 @@
   padding: 12px;
   font-size: 12px;
   color: var(--color-text-muted);
+}
+
+/* -------------------------------------------------------------
+   Rail collapse (desktop only)
+   The collapse chevron lives in the rail header; the TopBar
+   `<MenuButton>` is reused as the "expand" control when collapsed.
+   Below --bp-mobile the rail is an off-canvas drawer, so every rule
+   here is gated to >=768px and never touches the mobile drawer.
+   ------------------------------------------------------------- */
+.akira-rail-collapse-btn {
+  display: none;                 /* shown only on desktop (>=768px) */
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-base);
+  color: var(--color-text-muted);
+  padding: 4px;
+  margin: -2px -4px 0 0;
+  cursor: pointer;
+  line-height: 0;
+  font-family: inherit;
+}
+.akira-rail-collapse-btn:hover {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+@media (min-width: 768px) {
+  /* Collapse chevron is a desktop-only affordance. */
+  .akira-rail-collapse-btn { display: inline-flex; }
+
+  /* Slim icon-only rail. */
+  .akira-shell-rail-collapsed { grid-template-columns: 64px 1fr; }
+
+  /* Hide everything textual; leave only the nav icons + collapse chevron. */
+  .akira-shell-rail-collapsed .akira-rail-header-titles,
+  .akira-shell-rail-collapsed .akira-rail-section-title,
+  .akira-shell-rail-collapsed .akira-rail-link-label,
+  .akira-shell-rail-collapsed .akira-rail-link-count,
+  .akira-shell-rail-collapsed .akira-rail-link-dot,
+  .akira-shell-rail-collapsed .akira-rail-footer {
+    display: none;
+  }
+  .akira-shell-rail-collapsed .akira-rail-header {
+    justify-content: center;
+    padding: 14px 8px 12px;
+  }
+  .akira-shell-rail-collapsed .akira-rail-collapse-btn { margin: 0; }
+  .akira-shell-rail-collapsed .akira-rail-body { padding: 12px 8px; }
+  .akira-shell-rail-collapsed .akira-rail-link {
+    justify-content: center;
+    gap: 0;
+    padding: 10px 8px;
+  }
 }
 
 /* -------------------------------------------------------------

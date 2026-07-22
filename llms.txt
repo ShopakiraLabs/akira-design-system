@@ -44,7 +44,7 @@ The `Toolbelt` is the standard right-side cluster: **Appearance → Settings →
 - **`RailSectionTitle`** — small uppercase divider between groups in the rail.
 - **`RailLink`** — single nav row. Layout: **dot · icon · label · optional count**. Props: `label`, `icon?`, `active?`, `href?`, `onClick?`, `count?` (number → zero-padded 2-digit like `"05"`; string → verbatim; omit to hide). The dot is **always rendered** — muted when inactive, Heritage Red when `active` (theme-independent).
 - **`TopBar`** — horizontal header. Props: `appName?`, `start?`, `center?`, `end?`. On mobile, drop `<MenuButton />` into `start`.
-- **`MenuButton`** — hamburger that toggles the AppShell mobile drawer. Auto-hidden ≥768px. Reads `AkiraShellContext`; no props required. Custom icon via `icon?`, custom label via `ariaLabel?`.
+- **`MenuButton`** — hamburger that toggles the AppShell mobile drawer. Auto-hidden ≥768px (mobile only). Reads `AkiraShellContext`; no props required. Custom icon via `icon?`, custom label via `ariaLabel?`. On desktop, collapse/expand is handled by the chevron in the `LeftRail` header, not this button.
 - **`SearchBar`** — top-bar input. Props: `placeholder?`, `value?`, `onChange?`, `onSubmit?`.
 - **`Toolbelt`** — right-side cluster. Props: `appearance?` (default true), `settings?` (default: placeholder items so the gear always renders — pass your own array to override, or `false` to hide), `profile?`. Renders ThemePicker → SettingsMenu → ProfileMenu in that order. **All three should always be visible** in AKIRA apps unless there's a specific reason to hide one.
 - **`ThemePicker`** — gear button + theme/style popover. Self-wiring, no props needed.
@@ -66,7 +66,7 @@ Structural: `--radius-card`, `--radius-base`, `--radius-bar`, `--shadow-card`, `
 
 ## Themes (data-theme on <html>)
 
-`default` (AKIRA Red dark, no attr), `akira-dark`, `midnight`, `forest`, `coral-dark`, `ocean` (light), `coral` (light).
+`default` (AKIRA Red dark, no attr — CSS base), `akira-dark`, `midnight`, `forest`, `coral-dark`, `ocean` (light — **the default a fresh browser lands on, with `modern` style**), `coral` (light).
 
 ## Styles (data-style on <html>)
 
@@ -75,7 +75,7 @@ Structural: `--radius-card`, `--radius-base`, `--radius-bar`, `--shadow-card`, `
 ## Hooks
 
 - **`useAkiraTheme()`** — `{ theme, style, setTheme(slug), setStyle(slug) }`. Mirrors `<html data-theme>` / `<html data-style>` and persists to localStorage.
-- **`useAkiraShell()`** — `{ isMobile, railOpen, setRailOpen(b), toggleRail(), railId }`. Read mobile-drawer state and drive it from any nested component (e.g. an in-content "Open menu" CTA). Outside an `<AppShell>` it returns no-op defaults so consumers don't crash.
+- **`useAkiraShell()`** — `{ isMobile, railOpen, setRailOpen(b), toggleRail(), railCollapsed, setRailCollapsed(b), toggleRailCollapsed(), railId }`. Read/drive both the mobile drawer (`railOpen`) and the desktop slim-rail collapse (`railCollapsed`, persisted to `localStorage` under `akira:rail-collapsed`) from any nested component. Outside an `<AppShell>` it returns no-op defaults so consumers don't crash.
 
 ## Responsive
 

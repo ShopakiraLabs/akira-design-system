@@ -15,6 +15,7 @@
  * rendered verbatim with no split.
  */
 import type { ReactNode } from "react";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useAkiraShell } from "../AppShell/AkiraShellContext";
 
 export interface LeftRailProps {
@@ -61,7 +62,7 @@ export function LeftRail({
   // surface aria-hidden when the rail is off-canvas. Outside an AppShell
   // the hook returns no-op defaults (isMobile:false, railOpen:false) so
   // this component is still safe to render stand-alone.
-  const { railId, railOpen, isMobile } = useAkiraShell();
+  const { railId, railOpen, isMobile, railCollapsed, toggleRailCollapsed } = useAkiraShell();
   const cls =
     `akira-rail` +
     (railOpen ? " is-open" : "") +
@@ -74,8 +75,25 @@ export function LeftRail({
       aria-hidden={isMobile && !railOpen ? true : undefined}
     >
       <div className="akira-rail-header">
-        <div className="akira-rail-brand">{renderWordmark(appName)}</div>
-        {subtitle ? <div className="akira-rail-brand-sub">{subtitle}</div> : null}
+        <div className="akira-rail-header-titles">
+          <div className="akira-rail-brand">{renderWordmark(appName)}</div>
+          {subtitle ? <div className="akira-rail-brand-sub">{subtitle}</div> : null}
+        </div>
+        <button
+          type="button"
+          className="akira-rail-collapse-btn"
+          aria-label={railCollapsed ? "Expand navigation" : "Collapse navigation"}
+          aria-expanded={!railCollapsed}
+          aria-controls={railId}
+          title={railCollapsed ? "Expand navigation" : "Collapse navigation"}
+          onClick={toggleRailCollapsed}
+        >
+          {railCollapsed ? (
+            <PanelLeftOpen size={16} aria-hidden="true" />
+          ) : (
+            <PanelLeftClose size={16} aria-hidden="true" />
+          )}
+        </button>
       </div>
       <nav className="akira-rail-body">{children}</nav>
       {footer ? <div className="akira-rail-footer">{footer}</div> : null}
