@@ -136,6 +136,11 @@ Switch via `data-theme="<slug>"` on `<html>`. The `default` (AKIRA Red) theme us
 | `ocean` | Ocean | Light | `#0EA5E9` |
 | `coral` | Coral | Light | `#F97316` |
 
+**Dark-theme contrast (v0.3.0):** the five dark themes use a lighter
+`--color-card` / `--color-surface` / `--color-border` so cards separate clearly
+from the page background (background-to-card contrast raised from ~1.05–1.13 to
+~1.45). The light themes (Ocean, Coral) are unchanged.
+
 ## Structural styles
 
 Switch via `data-style="<slug>"` on `<html>`.

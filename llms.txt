@@ -91,7 +91,7 @@ Single breakpoint at **768px** (`--bp-mobile`). Above it: standard two-column sh
 
 ## When generating components
 
-- Always use the semantic color tokens — `var(--color-card)` not `#141418`.
+- Always use the semantic color tokens — `var(--color-card)` not `#2D2D35`.
 - Always wrap apps in `<AppShell>`. Don't invent your own layout grid.
 - Don't reorder the Toolbelt cluster.
 - For new card-like components, base their hover state on `border-color: var(--color-accent)` AND add a `[data-style="material"]` override using `box-shadow: 0 0 0 2px var(--color-accent), var(--shadow-card)` so Material's 0-border doesn't kill the hover affordance.

@@ -1,6 +1,6 @@
 /* =============================================================
    AKIRA Design System · akira-theme.css
-   v1 · 2026-04-22
+   v1 · 2026-04-22 · dark-theme card contrast raised 2026-07-31
    -------------------------------------------------------------
    One file, seven color themes, three structural styles.
    Drop into any AKIRA bolt app alongside akira-theme-picker.js.
@@ -67,12 +67,12 @@
    --------------------------------------------------------------- */
 :root {
   --color-bg:           #0A0A0A;
-  --color-card:         #141418;
-  --color-surface:      #1F1F25;
+  --color-card:         #2D2D35;
+  --color-surface:      #41414D;
   --color-text-primary: #F5F5F5;
   --color-text-muted:   #C1C1CF;  /* Rick 2026-04-22: lighter than 9CA3AF for readability */
   --color-accent:       #D92028;  /* Heritage Red */
-  --color-border:       #27272E;
+  --color-border:       #4E4E5C;
 }
 
 /* ---------------------------------------------------------------
@@ -80,12 +80,12 @@
    --------------------------------------------------------------- */
 [data-theme="akira-dark"] {
   --color-bg:           #0B0B0C;
-  --color-card:         #111114;
-  --color-surface:      #1A1A1F;
+  --color-card:         #2E2E36;
+  --color-surface:      #41414D;
   --color-text-primary: #F5F5F5;
   --color-text-muted:   #C1C1CF;  /* Rick 2026-04-22 */
   --color-accent:       #EC4899;
-  --color-border:       #1F1F23;
+  --color-border:       #4F4F59;
 }
 
 /* ---------------------------------------------------------------
@@ -93,12 +93,12 @@
    --------------------------------------------------------------- */
 [data-theme="midnight"] {
   --color-bg:           #09090B;
-  --color-card:         #121217;
-  --color-surface:      #1E1E24;
+  --color-card:         #2D2D39;
+  --color-surface:      #40404D;
   --color-text-primary: #FAFAFA;
   --color-text-muted:   #C1C1CF;  /* Rick 2026-04-22 */
   --color-accent:       #8B5CF6;
-  --color-border:       #27272A;
+  --color-border:       #4E4E54;
 }
 
 /* ---------------------------------------------------------------
@@ -106,12 +106,12 @@
    --------------------------------------------------------------- */
 [data-theme="forest"] {
   --color-bg:           #1C211C;
-  --color-card:         #252B25;
-  --color-surface:      #2D342D;
+  --color-card:         #343D34;
+  --color-surface:      #465146;
   --color-text-primary: #E6EEE6;
   --color-text-muted:   #9CA3AF;
   --color-accent:       #22C55E;
-  --color-border:       #374151;
+  --color-border:       #4D5C72;
 }
 
 /* ---------------------------------------------------------------
@@ -119,12 +119,12 @@
    --------------------------------------------------------------- */
 [data-theme="coral-dark"] {
   --color-bg:           #140D0B;
-  --color-card:         #1F1512;
-  --color-surface:      #2B1D19;
+  --color-card:         #3F2B25;
+  --color-surface:      #5A3D34;
   --color-text-primary: #FFF0EC;
   --color-text-muted:   #A38C85;
   --color-accent:       #F97316;
-  --color-border:       #3D2A25;
+  --color-border:       #694940;
 }
 
 /* ---------------------------------------------------------------
